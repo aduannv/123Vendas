@@ -1,14 +1,20 @@
 ﻿using _123Vendas.Application.Dtos;
 using _123Vendas.Domain.Entities;
+using _123Vendas.Domain.Events;
 using _123Vendas.Domain.Repositories;
 
 namespace _123Vendas.Application.Services;
 
-public class SaleService
+public class SaleService : ISaleService
 {
     private readonly ISaleRepository _saleRepository;
+    private readonly IEventPublisher _eventPublisher;
 
-    public SaleService(ISaleRepository saleRepository) => _saleRepository = saleRepository;
+    public SaleService(ISaleRepository saleRepository, IEventPublisher eventPublisher)
+    {
+        _saleRepository = saleRepository;
+        _eventPublisher = eventPublisher;
+    }
 
     public async Task<Sale> CreateSaleAsync(SaleCreateDto saleDto)
     {
@@ -31,6 +37,10 @@ public class SaleService
         }
 
         await _saleRepository.AddAsync(sale);
+
+        var eventToPublish = new CompraCriada { SaleId = sale.Id };
+        _eventPublisher.Publish(eventToPublish);
+
         return sale;
     }
 

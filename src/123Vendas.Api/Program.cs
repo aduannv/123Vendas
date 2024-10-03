@@ -32,7 +32,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
-builder.Services.AddScoped<SaleService>();
+builder.Services.AddScoped<ISaleService, SaleService>(); 
+builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
 var app = builder.Build();
 
