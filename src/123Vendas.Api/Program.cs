@@ -1,0 +1,41 @@
+using _123Vendas.Api.Extensions;
+using _123Vendas.Application.Services;
+using _123Vendas.Domain.Repositories;
+using _123Vendas.Infrastructure.Data;
+using _123Vendas.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<SalesDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    //c.SwaggerDoc("v1", new OpenApiInfo { Title = "123Vendas API", Version = "v1" });
+
+    //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    //c.IncludeXmlComments(xmlPath);
+});
+
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<SaleService>();
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.ApplyMigrations();
+}
+
+app.UseHttpsRedirection();
+
+app.MapControllers();
+
+app.Run();

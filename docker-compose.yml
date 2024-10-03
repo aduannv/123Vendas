@@ -1,0 +1,23 @@
+services:
+  123vendas.database:
+    image: postgres:latest
+    container_name: 123vendas.database
+    environment:
+      - POSTGRES_DB=123vendas
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/123vendas-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  123vendas.api:
+    image: ${DOCKER_REGISTRY-}123vendasapi
+    build:
+      context: .
+      dockerfile: src/123Vendas.Api/Dockerfile
