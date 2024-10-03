@@ -1,28 +1,17 @@
 ﻿namespace _123Vendas.Domain.Entities;
 
-public class Sale
+public class Sale(Guid customerId, string customerName, Guid branchId, string branchName)
 {
-    public Guid Id { get; private set; }
-    public DateTime SaleDate { get; private set; }
-    public Guid CustomerId { get; private set; }
-    public string CustomerName { get; private set; }
-    public Guid BranchId { get; private set; }
-    public string BranchName { get; private set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
+    public DateTime SaleDate { get; private set; } = DateTime.UtcNow;
+    public Guid CustomerId { get; private set; } = customerId;
+    public string CustomerName { get; private set; } = customerName;
+    public Guid BranchId { get; private set; } = branchId;
+    public string BranchName { get; private set; } = branchName;
     public decimal TotalAmount =>  Items.Sum(item => item.TotalAmount);
-    public bool IsCanceled { get; private set; }
+    public bool IsCanceled { get; private set; } = false;
 
     public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
-
-    public Sale(Guid customerId, string customerName, Guid branchId, string branchName)
-    {
-        Id = Guid.NewGuid();
-        SaleDate = DateTime.UtcNow;
-        CustomerId = customerId;
-        CustomerName = customerName;
-        BranchId = branchId;
-        BranchName = branchName;
-        IsCanceled = false;
-    }
 
     public void AddItem(Guid productId, string productName, int quantity, decimal unitPrice, decimal discount)
     {

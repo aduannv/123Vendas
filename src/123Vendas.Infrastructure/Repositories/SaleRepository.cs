@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace _123Vendas.Infrastructure.Repositories;
 
-public class SaleRepository : ISaleRepository
+public class SaleRepository(SalesDbContext context) : ISaleRepository
 {
-    private readonly SalesDbContext _context;
-
-    public SaleRepository(SalesDbContext context)
-    {
-        _context = context;
-    }
+    private readonly SalesDbContext _context = context;
 
     public async Task<Sale> GetByIdAsync(Guid id)
     {
@@ -27,10 +22,7 @@ public class SaleRepository : ISaleRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Sale>> GetAllAsync()
-    {
-        return await _context.Sales.Include(s => s.Items).ToListAsync();
-    }
+    public async Task<IEnumerable<Sale>> GetAllAsync() => await _context.Sales.Include(s => s.Items).ToListAsync();
 
     public async Task UpdateAsync(Sale sale)
     {

@@ -8,10 +8,7 @@ public class SaleService
 {
     private readonly ISaleRepository _saleRepository;
 
-    public SaleService(ISaleRepository saleRepository)
-    {
-        _saleRepository = saleRepository;
-    }
+    public SaleService(ISaleRepository saleRepository) => _saleRepository = saleRepository;
 
     public async Task<Sale> CreateSaleAsync(SaleCreateDto saleDto)
     {
@@ -37,15 +34,9 @@ public class SaleService
         return sale;
     }
 
-    public async Task<Sale> GetSaleByIdAsync(Guid saleId)
-    {
-        return await _saleRepository.GetByIdAsync(saleId);
-    }
+    public async Task<Sale> GetSaleByIdAsync(Guid saleId) => await _saleRepository.GetByIdAsync(saleId);
 
-    public async Task<IEnumerable<Sale>> GetAllSalesAsync()
-    {
-        return await _saleRepository.GetAllAsync();
-    }
+    public async Task<IEnumerable<Sale>> GetAllSalesAsync() => await _saleRepository.GetAllAsync();
 
     public async Task<bool> UpdateSaleAsync(Guid saleId, SaleUpdateDto saleUpdateDto)
     {
