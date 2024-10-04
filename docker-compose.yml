@@ -21,3 +21,9 @@ services:
     build:
       context: .
       dockerfile: src/123Vendas.Api/Dockerfile
+    ports:
+      - "57639:8080"
+      - "57640:8081"
+    depends_on:
+        123vendas.database:
+            condition: service_healthy
