@@ -8,7 +8,10 @@ public class Sale(Guid customerId, string customerName, Guid branchId, string br
     public string CustomerName { get; private set; } = customerName;
     public Guid BranchId { get; private set; } = branchId;
     public string BranchName { get; private set; } = branchName;
-    public decimal TotalAmount =>  Items.Sum(item => item.TotalAmount);
+    public decimal TotalAmount =>  Items
+        .Where(item => !item.IsCanceled)
+        .Sum(item => item.TotalAmount);
+
     public bool IsCanceled { get; private set; } = false;
 
     public List<SaleItem> Items { get; private set; } = new List<SaleItem>();

@@ -31,7 +31,7 @@ public class SalesDbContext(DbContextOptions<SalesDbContext> options) : DbContex
             entity.Property(s => s.BranchName)
                 .IsRequired()
                 .HasMaxLength(100);
-
+            
             entity.HasMany(s => s.Items)
                 .WithOne()
                 .HasForeignKey(si => si.SaleId)

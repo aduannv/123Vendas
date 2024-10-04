@@ -14,7 +14,6 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day) // Log para arquivo
     .CreateLogger();
 
-builder.Host.UseSerilog();
 
 builder.Services.AddDbContext<SalesDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -34,6 +33,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddScoped<ISaleService, SaleService>(); 
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
