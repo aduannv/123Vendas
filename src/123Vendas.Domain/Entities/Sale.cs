@@ -2,7 +2,7 @@
 
 public class Sale(Guid customerId, string customerName, Guid branchId, string branchName)
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime SaleDate { get; private set; } = DateTime.UtcNow;
     public Guid CustomerId { get; private set; } = customerId;
     public string CustomerName { get; private set; } = customerName;
@@ -14,7 +14,7 @@ public class Sale(Guid customerId, string customerName, Guid branchId, string br
 
     public bool IsCanceled { get; private set; } = false;
 
-    public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
+    public List<SaleItem> Items { get; set; } = new List<SaleItem>();
 
     public void AddItem(Guid productId, string productName, int quantity, decimal unitPrice, decimal discount)
     {

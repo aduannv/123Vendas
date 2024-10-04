@@ -2,7 +2,7 @@
 
 public class SaleItem(Guid saleId, Guid productId, string productName, int quantity, decimal unitPrice, decimal discount)
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
     public Guid SaleId { get; private set; } = saleId;
     public Guid ProductId { get; private set; } = productId;
     public string ProductName { get; private set; } = productName;
