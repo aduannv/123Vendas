@@ -56,6 +56,9 @@ public class SaleService : ISaleService
         sale.UpdateDetails(saleUpdateDto.CustomerId, saleUpdateDto.CustomerName, saleUpdateDto.BranchId, saleUpdateDto.BranchName);
 
         await _saleRepository.UpdateAsync(sale);
+
+        var eventToPublish = new CompraAlterada { SaleId = sale.Id };
+        _eventPublisher.Publish(eventToPublish);
         return true;
     }
 
@@ -64,7 +67,26 @@ public class SaleService : ISaleService
         var sale = await GetSaleByIdAsync(saleId);
         if (sale == null) return false;
 
-        await _saleRepository.DeleteAsync(sale);
+        sale.CancelSale();
+
+        await _saleRepository.UpdateAsync(sale);
+
+        var eventToPublish = new CompraCancelada { SaleId = sale.Id };
+        _eventPublisher.Publish(eventToPublish);
+
         return true;
+    }
+
+    public async Task CancelItemAsync(Guid saleId, Guid itemId)
+    {
+        var sale = await GetSaleByIdAsync(saleId) ?? throw new KeyNotFoundException("Sale not found!");
+        var item = sale.Items.FirstOrDefault(i => i.Id == itemId) ?? throw new KeyNotFoundException("Sale item not found.");
+
+        item.CancelItem();
+
+        await _saleRepository.UpdateAsync(sale);
+
+        var itemCanceladoEvent = new ItemCancelado { ItemId = itemId, SaleId = saleId };
+        _eventPublisher.Publish(itemCanceladoEvent);
     }
 }

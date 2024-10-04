@@ -6,9 +6,9 @@ namespace _123Vendas.Api.Controllers
 {
     [Route("api/sales")]
     [ApiController]
-    public class SalesController(SaleService saleService, ILogger<SalesController> logger) : ControllerBase
+    public class SalesController(ISaleService saleService, ILogger<SalesController> logger) : ControllerBase
     {
-        private readonly SaleService _saleService = saleService;
+        private readonly ISaleService _saleService = saleService;
         private readonly ILogger<SalesController> _logger = logger;
 
         // GET: api/sales
@@ -116,25 +116,46 @@ namespace _123Vendas.Api.Controllers
 
         // DELETE: api/sales/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSale(Guid id)
+        public async Task<IActionResult> CancelSale(Guid id)
         {
-            _logger.LogInformation("Deleting sale with ID {Id}.", id);
+            _logger.LogInformation("Canceling sale with ID {Id}.", id);
             try
             {
                 var existingSale = await _saleService.GetSaleByIdAsync(id);
                 if (existingSale == null)
                 {
-                    _logger.LogWarning("Sale with ID {Id} not found for deletion.", id);
+                    _logger.LogWarning("Sale with ID {Id} not found for cancel.", id);
                     return NotFound($"Sale with ID {id} not found.");
                 }
 
                 await _saleService.DeleteSaleAsync(id);
-                _logger.LogInformation("Successfully deleted sale with ID {Id}.", id);
+                _logger.LogInformation("Successfully cancel sale with ID {Id}.", id);
                 return NoContent();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while deleting the sale with ID {Id}.", id);
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpPatch("{saleId}/items/{itemId}/cancel")]
+        public async Task<IActionResult> CancelItem(Guid saleId, Guid itemId)
+        {
+            _logger.LogInformation("Canceling sale item with ID {ItemId}.", itemId);
+            try
+            {
+                await _saleService.CancelItemAsync(saleId, itemId);
+                _logger.LogInformation("Successfully cancel sale item with ID {ItemId}.", itemId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while cancel the saleitem with ID {ItemId}.", itemId);
                 return StatusCode(500, "Internal server error.");
             }
         }

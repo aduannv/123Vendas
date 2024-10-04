@@ -9,5 +9,11 @@ public class SaleItem(Guid saleId, Guid productId, string productName, int quant
     public int Quantity { get; private set; } = quantity;
     public decimal UnitPrice { get; private set; } = unitPrice;
     public decimal Discount { get; private set; } = discount;
+    public bool IsCanceled { get; private set; } = false;
     public decimal TotalAmount => (UnitPrice - Discount) * Quantity;
+
+    public void CancelItem()
+    {
+        IsCanceled = true;
+    }
 }
