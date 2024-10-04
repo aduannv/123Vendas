@@ -30,7 +30,7 @@ Antes de executar o projeto, você precisará ter instalado:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seuusuario/123Vendas.git
+   git clone https://github.com/aduannv/123Vendas.git
    ```
 
 2. Navegue até o diretório do projeto:
