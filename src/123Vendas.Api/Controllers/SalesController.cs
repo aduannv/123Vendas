@@ -11,7 +11,11 @@ namespace _123Vendas.Api.Controllers
         private readonly ISaleService _saleService = saleService;
         private readonly ILogger<SalesController> _logger = logger;
 
-        // GET: api/sales
+        /// <summary>
+        /// Obtém todas as vendas.
+        /// </summary>
+        /// <response code="200">Lista de vendas retornada com sucesso.</response>
+        /// <response code="404">Nenhuma venda encontrada.</response>
         [HttpGet]
         public async Task<IActionResult> GetAllSales()
         {
@@ -35,7 +39,12 @@ namespace _123Vendas.Api.Controllers
             }
         }
 
-        // GET: api/sales/{id}
+        /// <summary>
+        /// Obtém uma venda específica pelo ID.
+        /// </summary>
+        /// <param name="id">O ID da venda a ser obtida.</param>
+        /// <response code="200">Venda encontrada com sucesso.</response>
+        /// <response code="404">Venda não encontrada.</response>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSaleById(Guid id)
         {
@@ -59,7 +68,12 @@ namespace _123Vendas.Api.Controllers
             }
         }
 
-        // POST: api/sales
+        /// <summary>
+        /// Cria uma nova venda.
+        /// </summary>
+        /// <param name="sale">Os dados da venda a serem criados.</param>
+        /// <response code="201">Venda criada com sucesso.</response>
+        /// <response code="400">Dados da venda inválidos.</response>
         [HttpPost]
         public async Task<IActionResult> CreateSale([FromBody] SaleCreateDto sale)
         {
@@ -83,7 +97,14 @@ namespace _123Vendas.Api.Controllers
             }
         }
 
-        // PUT: api/sales/{id}
+        /// <summary>
+        /// Atualiza uma venda existente.
+        /// </summary>
+        /// <param name="id">O ID da venda a ser atualizada.</param>
+        /// <param name="sale">Os novos dados da venda.</param>
+        /// <response code="204">Venda atualizada com sucesso.</response>
+        /// <response code="400">Dados da venda inválidos.</response>
+        /// <response code="404">Venda não encontrada.</response>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSale(Guid id, [FromBody] SaleUpdateDto sale)
         {
@@ -114,7 +135,12 @@ namespace _123Vendas.Api.Controllers
             }
         }
 
-        // DELETE: api/sales/{id}
+        /// <summary>
+        /// Cancela uma venda específica pelo ID.
+        /// </summary>
+        /// <param name="id">O ID da venda a ser excluída.</param>
+        /// <response code="204">Venda excluída com sucesso.</response>
+        /// <response code="404">Venda não encontrada.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> CancelSale(Guid id)
         {
@@ -139,6 +165,13 @@ namespace _123Vendas.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Cancela um item em uma venda.
+        /// </summary>
+        /// <param name="saleId">O ID da venda.</param>
+        /// <param name="itemId">O ID do item na venda.</param>
+        /// <response code="204">Item cancelado com sucesso.</response>
+        /// <response code="404">Venda ou item não encontrados.</response>
         [HttpPatch("{saleId}/items/{itemId}/cancel")]
         public async Task<IActionResult> CancelItem(Guid saleId, Guid itemId)
         {

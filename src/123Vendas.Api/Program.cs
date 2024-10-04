@@ -4,7 +4,9 @@ using _123Vendas.Domain.Repositories;
 using _123Vendas.Infrastructure.Data;
 using _123Vendas.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,15 +25,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    //c.SwaggerDoc("v1", new OpenApiInfo { Title = "123Vendas API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "123Vendas API", Version = "v1" });
 
-    //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    //c.IncludeXmlComments(xmlPath);
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
-builder.Services.AddScoped<ISaleService, SaleService>(); 
+builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<IEventPublisher, EventPublisher>();
 
 builder.Host.UseSerilog();
