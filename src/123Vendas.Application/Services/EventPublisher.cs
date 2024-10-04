@@ -1,13 +1,18 @@
 ﻿using _123Vendas.Domain.Events;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
-public class EventPublisher(ILogger logger) : IEventPublisher
+public class EventPublisher : IEventPublisher
 {
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<EventPublisher> _logger;
+
+    public EventPublisher(ILogger<EventPublisher> logger)
+    {
+        _logger = logger;
+    }
 
     public void Publish(IEvent eventToPublish)
     {
-        _logger.Information("Event Published: {EventType}, SaleId: {SaleId}, OccurredOn: {OccurredOn}",
+        _logger.LogInformation("Event Published: {EventType}, SaleId: {SaleId}, OccurredOn: {OccurredOn}",
             eventToPublish.EventType,
             eventToPublish is CompraCriada compraCriada ? compraCriada.SaleId :
             eventToPublish is CompraAlterada compraAlterada ? compraAlterada.SaleId :

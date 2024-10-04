@@ -10,5 +10,6 @@ namespace _123Vendas.Application.Services
         Task<IEnumerable<Sale>> GetAllSalesAsync();
         Task<Sale> GetSaleByIdAsync(Guid saleId);
         Task<bool> UpdateSaleAsync(Guid saleId, SaleUpdateDto saleUpdateDto);
+        Task CancelItemAsync(Guid saleId, Guid itemId);
     }
 }
