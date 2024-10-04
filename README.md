@@ -89,4 +89,4 @@ Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICEN
 Se você tiver alguma dúvida, sinta-se à vontade para entrar em contato:
 
 - **Nome**: Aduan
-- **Email**: seu-email@example.com
+- **Email**: aduannvl@gmail.com
