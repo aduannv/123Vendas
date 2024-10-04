@@ -45,7 +45,7 @@ Antes de executar o projeto, você precisará ter instalado:
    
 4. Acesse o swagger no navegador:
    ```bash
-   http://localhost:57639/swagger
+   https://localhost:57640/swagger
    ```
 
 ## Testes
